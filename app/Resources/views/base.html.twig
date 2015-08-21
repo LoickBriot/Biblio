@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Biblio application{% endblock %}</title>
+</head>
+
+<body style="width:70%;margin:auto;padding:0px;">
+
+{% block header %}
+    <header>
+        {% block javascripts %}
+        {% endblock %}
+    </header>
+{% endblock %}
+
+<div class="container body-container">
+    {% block body %}
+        <div class="row">
+            <div id="main" class="col-sm-9">
+                {% block main %}{% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+</div>
+
+{% block footer %}
+    <footer>
+        <div class="container">
+        </div>
+    </footer>
+{% endblock %}
+
+
+
+</body>
+</html>

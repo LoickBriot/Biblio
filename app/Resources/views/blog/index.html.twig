@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+    {% block javascripts %}
+        <script src="http://localhost/Biblio/web/jquery-1.7.2.min.js">  </script>
+        <script src="http://localhost/Biblio/web/lib/WebViewer.min.js"> </script>
+
+        <script language="javascript">
+            $(function() {
+                var viewerElement = document.getElementById('viewer');
+                var myWebViewer = new PDFTron.WebViewer({
+                    path: "http://localhost/Biblio/web/lib",
+                    initialDoc: "http://localhost/Biblio/web/accueil.pdf",
+                    showToolbarControl: false,
+                    enableReadOnlyMode: true
+                }, viewerElement);
+
+            });
+        </script>
+    {% endblock %}
+
+    {% block main %}
+        <button id="#single" onclick="window.location.href='single'"> Recherche sur un document </button>
+        <button id="#multiple" onclick="window.location.href='page'"> Recherche sur plusieurs documents </button>
+        <a href="index"> Revenir sur le site </a>
+        <div id="viewer" style="height: 700px;"/>
+    {% endblock %}
+

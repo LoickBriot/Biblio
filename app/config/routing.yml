@@ -1,0 +1,23 @@
+blog_index:
+    path: /
+    defaults: {_controller: AppBundle:Blog:index}
+
+blog_post:
+    path: /posts/{slug}
+    defaults: {_controller: AppBundle:Blog:postShow}
+
+comment_new:
+    path: /comment/{postSlug}
+    defaults: {_controller: AppBundle:Blog:commentNew}
+
+search_index:
+    path: /search/index
+    defaults: {_controller: AppBundle:Blog:searchIndex}
+
+search_page:
+    path: /search/page
+    defaults: {_controller: AppBundle:Blog:searchPage}
+
+singleSearch_page:
+    path: /search/single
+    defaults: {_controller: AppBundle:Blog:singleSearchPage}

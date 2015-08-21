@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+    {% block javascripts %}
+        <script src="http://localhost/Biblio/web/jquery-1.7.2.min.js"></script>
+        <script src="http://localhost/Biblio/web/lib/WebViewer.min.js"></script>
+
+        <script language="javascript">
+            // récupération de la variable
+            var searchedWord = '{{ fullSearch }}' ;
+            var chosenDoc ='{{ chosenDoc }}';
+
+            //génération du tableau de document et de mots similaires grâce à la variable searchedWord
+            var documentList = {{ documentList|json_encode|raw }}; //new Array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
+            var wordList = {{ wordList|json_encode|raw }};  //new Array(searchedWord, "vous", "lous", "nous");
+            var path = "http://localhost/Biblio/web/pdf/";
+
+            var i=documentList.indexOf(chosenDoc);
+            var j=wordList.indexOf(searchedWord);
+
+            var viewerElement;
+            var myWebViewer;
+            $(function() {
+
+                document.getElementById('#fullSearch').value=searchedWord;
+                viewerElement = document.getElementById('viewer');
+                myWebViewer = new PDFTron.WebViewer({
+                    path: "http://localhost/Biblio/web/lib",
+                    initialDoc: path + documentList[i],
+                    // config: "http://localhost/Biblio/web/config.js",
+                    custom: searchedWord,
+                    showToolbarControl: false,
+                    enableReadOnlyMode: true
+                }, viewerElement);
+
+                $(viewerElement).on("toolModeChanged", function(event) {
+                    myWebViewer.setToolMode(PDFTron.WebViewer.ToolMode.Pan);
+                });
+
+                $('#nextDocumentButton').on('click', function() {
+                    if (++i > documentList.length-1 ) i--;
+                    else {
+                        myWebViewer.loadDocument(path + documentList[i]);
+                        currentLoad = documentList[i];
+                        SelectMenu.selectedIndex=i;
+                    }
+                });
+
+                $('#previousDocumentButton').on('click', function() {
+                    if (--i < 0) i++;
+                    else{
+                        myWebViewer.loadDocument(path + documentList[i]);
+                        currentLoad = documentList[i];
+                        SelectMenu.selectedIndex=i;
+                    }
+                });
+
+            });
+        </script>
+
+        <script language="javascript">
+            function changeDoc(form) {
+                if (chosenDoc != documentList[form.SelectDoc.selectedIndex]){
+                    document.getElementById('#form').submit();
+                }
+            }
+
+            function changeWord(form) {
+                if (chosenDoc!= wordList[form.SelectWord.selectedIndex]){
+                    document.getElementById('#fullSearch').value=wordList[form.SelectWord.selectedIndex];
+                    document.getElementById('#form').submit();
+                }
+            }
+        </script>
+    {% endblock %}
+
+    {% block main %}
+        <div>
+
+            <form id="#form" method="POST" action="single">
+                <label> Texte Recherché </label>
+                <input name="fullSearch" id="#fullSearch"/>
+                <input id="#searchButton" type="submit" value="Valider"> </input>
+                <p></p>
+
+                Choisir un document contenant ce mot dans la liste déroulante:
+                <select style="width: 200px" name='SelectDoc' id='SelectDoc' onChange='changeDoc(this.form)'>
+                    <script language="javascript">
+                        for(var k=0; k<documentList.length; k++){
+                            if(k==i) {
+                                document.write("<option selected>" + documentList[k] + "</option>");
+                            } else {
+                                document.write("<option>" + documentList[k] + "</option>");
+                            }
+                        }
+                    </script>
+                </select>
+                <p></p>
+                Choisir un mot similaire dans la liste déroulante :
+                <select style="width: 200px" name='SelectWord' id='SelectWord' onChange='changeWord(this.form)'>
+                    <script language="javascript">
+                        for(var k=0; k<wordList.length; k++){
+                            if(k==j){
+                                document.write("<option selected>" + wordList[k] + "</option>");
+                            } else {
+                                document.write("<option>" + wordList[k] + "</option>");
+                            }
+                        }
+                        // document.write("<input type='hidden' id='#searchText' name='fullSearch' value='" + wordList[this.SelectWord.selectedIndex] + "'/>" );
+                    </script>
+                </select>
+            </form>
+        </div>
+        <a href="index"> Revenir à la page d'accueil </a>
+        <div id="viewer" style="height: 700px;"/>
+
+    {% endblock %}
+
