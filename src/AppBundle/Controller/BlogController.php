@@ -23,53 +23,55 @@ class BlogController extends Controller
 {
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $posts = $em->getRepository('AppBundle:Post')->findLatest();
-        $names = array("manu","loick");
-        return $this->render('blog/index.html.twig', array('names' => $names)); //, array('posts' => $posts));
+        return $this->render('blog/index.html.twig');
     }
 
-    public function searchIndexAction(Request $request)
-    {
-        return $this->render('blog/index.html.twig'); //, array('posts' => $posts));
-    }
+
+    /*
+     * CHOIX A FAIRE : UTILISER GET POUR PERMETTRE LE PARTAGE D'URL DE RECHERCHE OU UTILISER POST ?
+     */
 
     public function singleSearchPageAction(Request $request)
     {
-        $word="";
-        if (isset($_POST['fullSearch'])) {
-            $word = $_POST['fullSearch'];
+        $word="Nancy";
+        if (isset($_POST['searchedWord'])) {
+            $word = $_POST['searchedWord'];
         }
 
-        $wordList = array($word, "vous", "lous", "nous");
-
-        $documentList = array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
-
-
-        $doc=$documentList[0];
+        // Requête SQL. Trouver la liste de document (complete) ou réduite pa rapport à des critère SQL. (Tome, auteurs, date...)
+        $documentList = array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
+        $doc="document_patriote.pdf";
         if (isset($_POST['SelectDoc'])) {
             $doc = $_POST['SelectDoc'];
         }
 
-        return $this->render('blog/singleSearch.html.twig', array( "fullSearch" => $word, "chosenDoc" => $doc , "wordList" => $wordList, "documentList" => $documentList )); //, array('posts' => $posts));
+        // Utilisation de Elastic Search. Trouver les mots similaires au mot $word contenu dans le pdf $doc selectionné
+        $wordList = array($word, "vous", "lous", "nous");
+
+        return $this->render('blog/singleSearch.html.twig', array( "searchedWord" => $word, "chosenDoc" => $doc , "wordList" => $wordList, "documentList" => $documentList )); //, array('posts' => $posts));
     }
 
-    public function searchPageAction(Request $request)
+
+    public function multipleSearchPageAction(Request $request)
     {
-        $word="";
+        $word="Nancy";
         if (isset($_POST['fullSearch'])) {
             $word = $_POST['fullSearch'];
         }
 
-
-
-        $documentList = array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
+        // Utilisation de Elastic Search. Trouver les mots similaires au mot $word contenu dans l'ensemble des pdf
         $wordList = array($word, "vous", "lous", "nous");
-        return $this->render('blog/search.html.twig', array( "fullSearch" => $word, "wordList" => $wordList, "documentList" => $documentList)); //, array('posts' => $posts));
+
+        // Utilisation de Elastic Search. Trouver tous les documents contenant exactement le mot $word.
+        $documentList = array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
+
+        return $this->render('blog/multipleSearch.html.twig', array( "fullSearch" => $word, "wordList" => $wordList, "documentList" => $documentList)); //, array('posts' => $posts));
     }
 
+
+
+
     /*
-     *
      * NOTE: The $post controller argument is automatically injected by Symfony
      * after performing a database query looking for a Post with the 'slug'
      * value given in the route.

@@ -5,12 +5,10 @@
         <script src="http://localhost/Biblio/web/lib/WebViewer.min.js"></script>
 
         <script language="javascript">
-            // récupération de la variable
-            var searchedWord = '{{ fullSearch }}' ;
 
-            //génération du tableau de document et de mots similaires grâce à la variable searchedWord
-            var documentList = {{ documentList|json_encode|raw }}; //new Array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
-            var wordList = {{ wordList|json_encode|raw }};  //new Array(searchedWord, "vous", "lous", "nous");
+            var searchedWord = '{{ fullSearch }}' ;
+            var documentList = {{ documentList|json_encode|raw }};
+            var wordList = {{ wordList|json_encode|raw }};
 
             var path = "http://localhost/Biblio/web/pdf/";
 
@@ -27,7 +25,6 @@
                 myWebViewer = new PDFTron.WebViewer({
                     path: "http://localhost/Biblio/web/lib",
                     initialDoc: path + documentList[i],
-                    // config: "http://localhost/Biblio/web/config.js",
                     custom: searchedWord,
                     showToolbarControl: false,
                     enableReadOnlyMode: true
@@ -54,7 +51,6 @@
                         SelectMenu.selectedIndex=i;
                     }
                 });
-
             });
         </script>
 
@@ -84,7 +80,7 @@
 
             </script>
 
-            <form id="#searchForm" method="POST" action="page">
+            <form id="#searchForm" method="POST" action="multiple_search">
                 <label> Texte Recherché </label>
                 <input name="fullSearch" id="#fullSearch"/>
                 <input id="#searchButton" type="submit" value="Valider"> </input>
@@ -117,7 +113,7 @@
             <input id="previousDocumentButton" type="button" value="Précédent document"/>
             <input id="nextDocumentButton" type="button" value="Prochain document"/>
         </div>
-        <a href="index"> Revenir à la page d'accueil </a>
+        <a href="http://localhost/Biblio/web/app_dev.php"> Revenir à la page d'accueil </a>
 
         <div id="viewer" style="height: 700px;"/>
 

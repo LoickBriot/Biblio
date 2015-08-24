@@ -10,14 +10,10 @@ comment_new:
     path: /comment/{postSlug}
     defaults: {_controller: AppBundle:Blog:commentNew}
 
-search_index:
-    path: /search/index
-    defaults: {_controller: AppBundle:Blog:searchIndex}
-
-search_page:
-    path: /search/page
-    defaults: {_controller: AppBundle:Blog:searchPage}
+multipleSearch_page:
+    path: /multiple_search
+    defaults: {_controller: AppBundle:Blog:multipleSearchPage}
 
 singleSearch_page:
-    path: /search/single
+    path: /single_search
     defaults: {_controller: AppBundle:Blog:singleSearchPage}
