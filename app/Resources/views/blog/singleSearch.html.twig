@@ -31,24 +31,7 @@
                 $(viewerElement).on("toolModeChanged", function(event) {
                     myWebViewer.setToolMode(PDFTron.WebViewer.ToolMode.Pan);
                 });
-
-                $('#nextDocumentButton').on('click', function() {
-                    if (++i > documentList.length-1 ) i--;
-                    else {
-                        myWebViewer.loadDocument(path + documentList[i]);
-                        currentLoad = documentList[i];
-                        SelectMenu.selectedIndex=i;
-                    }
-                });
-
-                $('#previousDocumentButton').on('click', function() {
-                    if (--i < 0) i++;
-                    else{
-                        myWebViewer.loadDocument(path + documentList[i]);
-                        currentLoad = documentList[i];
-                        SelectMenu.selectedIndex=i;
-                    }
-                });
+                
 
             });
         </script>

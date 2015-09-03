@@ -1431,10 +1431,10 @@
         
         searchText: function(pattern, mode) {
             var me = this;
-            if (pattern !== '') {
+           // if (pattern !== '') {
                 mode = mode | me.docViewer.SearchMode.e_page_stop | me.docViewer.SearchMode.e_highlight;
                 me.docViewer.textSearchInit(pattern, mode, false);
-            }
+            //}
         },
         
         fullTextSearch: function(pattern) {

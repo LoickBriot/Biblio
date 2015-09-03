@@ -39,8 +39,8 @@ class BlogController extends Controller
         }
 
         // Requête SQL. Trouver la liste de document (complete) ou réduite pa rapport à des critère SQL. (Tome, auteurs, date...)
-        $documentList = array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
-        $doc="document_patriote.pdf";
+        $documentList = array("SHLML_WIENER_decoup.pdf","document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
+        $doc="SHLML_WIENER_decoup.pdf";
         if (isset($_POST['SelectDoc'])) {
             $doc = $_POST['SelectDoc'];
         }
@@ -63,7 +63,7 @@ class BlogController extends Controller
         $wordList = array($word, "vous", "lous", "nous");
 
         // Utilisation de Elastic Search. Trouver tous les documents contenant exactement le mot $word.
-        $documentList = array("document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
+        $documentList = array("SHLML_WIENER_decoup.pdf","document_patriote.pdf",  "test.pdf",  "these.pdf" ,"test2.pdf",  "test3.pdf");
 
         return $this->render('blog/multipleSearch.html.twig', array( "fullSearch" => $word, "wordList" => $wordList, "documentList" => $documentList)); //, array('posts' => $posts));
     }
